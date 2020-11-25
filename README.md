@@ -149,6 +149,7 @@ a: rgb values in 3 base 6 digits
     c000: black
     c520: orange
     c022: sea green
+    c225: the best blue
     c555: full white
     
 g: greyscale
