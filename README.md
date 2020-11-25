@@ -1,5 +1,5 @@
 # terminal_colours
-
+![Preview image](/preview.PNG)
 ##Add helpful ANSI tools for printing funky text
 
 **Author: J.Hadida (jhadida87 at ggooglemail)**
