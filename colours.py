@@ -59,9 +59,9 @@ d: dark colour codes (light and dark may be inverted in dark mode)
 a: rgb values in 3 base 6 digits
     0-5 digits for r then g then b values
     e.g:
-    c000: black
-    c520: orange
-    c022: sea green
+    a000: black
+    a520: orange
+    a022: sea green
 g: greyscale
     0-25 brightness
     g0: black
@@ -159,9 +159,9 @@ def get_colour_code(code="") -> str:
             a: rgb values in 3 base 6 digits
                 0-5 digits for r then g then b values
                 e.g:
-                c000: black
-                c520: orange
-                c022: sea green
+                a000: black
+                a520: orange
+                a022: sea green
             g: greyscale
                 0-25 brightness
                 g0: black
