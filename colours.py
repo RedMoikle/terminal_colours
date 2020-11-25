@@ -1,7 +1,6 @@
 #! python3
 """
 Colour-printer.
-# Author: J.Hadida (jhadida87 at ggooglemail)
 # Modified by: Michael Stickler
 
 List of colours (for fg and bg):
@@ -79,7 +78,7 @@ COLCODE = {
     'b': 4,  # blue
     'm': 5,  # magenta
     'c': 6,  # cyan
-    'w': 7  # white
+    'w': 7   # white
 }
 
 FMTCODE = {
