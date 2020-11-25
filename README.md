@@ -118,22 +118,6 @@ Use these in a string whenever a "fg" or "bg" parameter is required
 
 ### More colours:
 
-#### SIMPLE:
-
-string containing colour code
-
-    k:   black
-    r:   red
-    g:   green
-    y:   yellow
-    b:   blue
-    m:   magenta
-    c:   cyan
-    w:   white
-***
-
-#### ADVANCED:
-
 prefix with the following:
 
 l: light colour codes (light and dark may be inverted in dark mode)
