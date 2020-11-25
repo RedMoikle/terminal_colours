@@ -24,7 +24,7 @@ Message is required, all other params are optional and can be named.
 
 Prints a message to the screen in a particular colour and style
     
-    import terminal_colours.terminal_colours as tc
+    import terminal_colours.colours as tc
     tc.cprint('Hello', fg='r') # prints red text
     tc.cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
     tc.cprint('Hello', preset='error') # prints text with the 'error' preset
