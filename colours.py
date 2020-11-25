@@ -4,28 +4,18 @@ Add helpful ANSI tools for printing funky text
 # Author: Michael Stickler
 
 Examples:
-cprint('Hello', fg='r') # prints red text
-cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
+cprint('Hello', tx='r') # prints red text
+cprint('Hello', tx='dg', style='bi') # prints dark green, bold italic text
 cprint('Hello', preset='error') # prints text with the 'error' preset
 
 print(colour('ERROR: ', preset='error') + "something went wrong!") 
 #prints an error message and the first word is highlighted
 
-new_preset("important", fg="a530", style="rb", test=True)
+new_preset("important", tx="a530", style="rb", test=True)
 #creates a new preset called "important" and gives a sample.
 
 print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}', rotations=5, style="b")
 print_rainbow(f'{" " * 120}\n' * 40, rotations=81, style="r")
-
-List of colours (for fg and bg):
-    k   black
-    r   red
-    g   green
-    y   yellow
-    b   blue
-    m   magenta
-    c   cyan
-    w   white
 
 List of styles:
     b   bold
@@ -37,6 +27,16 @@ List of styles:
     y   fast blinking
     f   faint
     h   hide
+
+List of colours (for tx and bg):
+    k   black
+    r   red
+    g   green
+    y   yellow
+    b   blue
+    m   magenta
+    c   cyan
+    w   white
 
 more colours:
 prefix with the following:
@@ -81,7 +81,7 @@ COLCODE = {
     'b': 4,  # blue
     'm': 5,  # magenta
     'c': 6,  # cyan
-    'w': 7   # white
+    'w': 7  # white
 }
 
 FMTCODE = {
@@ -97,16 +97,15 @@ FMTCODE = {
 }
 PRESETS = {}
 
-
-def cprint(message, preset=None, fg=None, bg=None, style="", br=False, *args, **kwargs):
+def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **kwargs):
     """print a string with a particular colour/style"""
-    print(colour(message, preset, fg, bg, style, br), *args, **kwargs)
+    print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
 
 
-def colour(message, preset=None, fg=None, bg=None, style="", br=False, ) -> str:
+def colour(message, preset=None, tx=None, bg=None, style="", br=False, ) -> str:
     """return a string with a particular colour/style, useful for mixing styles"""
     if preset is None:
-        prop_str = style_code(fg, bg, style, br)
+        prop_str = style_code(tx, bg, style, br)
     else:
         prop_str = PRESETS[preset]
     if prop_str:
@@ -116,22 +115,22 @@ def colour(message, preset=None, fg=None, bg=None, style="", br=False, ) -> str:
         return message
 
 
-def new_preset(name, fg=None, bg=None, style="", br=False, test=False):
+def new_preset(name, tx=None, bg=None, style="", br=False, test=False):
     """Saves a preset ANSI code under a name for easy reference"""
-    preset = style_code(fg, bg, style, br)
+    preset = style_code(tx, bg, style, br)
     PRESETS[name] = preset
     if test:
         cprint(f"Test message using the new style preset: ({name}) {preset}", name)
 
 
-def style_code(fg=None, bg=None, style="", br=False) -> str:
+def style_code(tx=None, bg=None, style="", br=False) -> str:
     """Generates and returns a ANSI code sequence as a string."""
     properties: List[str] = []
-    if fg is not None:
-        properties.append(f"3{get_colour_code(fg)}")
+    if tx is not None:
+        properties.append(f"3{get_colour_code(tx)}")
     if bg is not None:
         properties.append(f"4{get_colour_code(bg)}")
-    if br and fg is not None or bg is not None:
+    if br and tx is not None or bg is not None:
         properties.append("1")
     properties += [str(FMTCODE[s]) for s in style]
     return ";".join(properties)
@@ -202,24 +201,24 @@ def print_rainbow(message, rotations=1.5, style=""):
     char_iter = iter(enumerate(message))
     for i, char in char_iter:
         if char == "\n":
-            print("".join([colour(char, fg=f"a{r}{g}{b}", style=style)
+            print("".join([colour(char, tx=f"a{r}{g}{b}", style=style)
                            for char, r, g, b in rgb]))
             rgb = []
             continue
         rgb.append([char] + rainbow_nums(frequency, i))
         # [max(0, min(5, int(6 * (sin(2 * pi * (frequency * i + 0.333 * channel)) / 2 + 0.5))))
         # for channel in range(1, 4)])
-    print("".join([colour(char, fg=f"a{r}{g}{b}", style=style)
+    print("".join([colour(char, tx=f"a{r}{g}{b}", style=style)
                    for char, r, g, b in rgb]))
 
 
 # default presets
 testing = __name__ == '__main__'
-new_preset("info", fg="lc", style="i", test=testing)
-new_preset("debug", fg="lm", style="i", test=testing)
-new_preset("warning", fg="y", br=True, style="iu", test=testing)
-new_preset("error", fg="r", br=True, style="bu", test=testing)
-new_preset("critical", fg="dr", style="rbu", test=testing)
+new_preset("info", tx="lc", style="i", test=testing)
+new_preset("debug", tx="lm", style="i", test=testing)
+new_preset("warning", tx="y", br=True, style="iu", test=testing)
+new_preset("error", tx="r", br=True, style="bu", test=testing)
+new_preset("critical", tx="dr", style="rbu", test=testing)
 if __name__ == '__main__':
     print_rainbow(f'{" " * 120}\n' * 4, rotations=11.5, style="r")
     print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}'.center(120), rotations=5, style="b")

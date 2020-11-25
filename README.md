@@ -16,20 +16,20 @@ Colour and Style Code Guide
 
 ####cprint
 
-######(message, preset=None, fg=None, bg=None, style="", br=False)
+######(message, preset=None, tx=None, bg=None, style="", br=False)
 
 Message is required, all other params are optional and can be named.
 
 Prints a message to the screen in a particular colour and style
     
     import terminal_colours.colours as tc
-    tc.cprint('Hello', fg='r') # prints red text
-    tc.cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
+    tc.cprint('Hello', tx='r') # prints red text
+    tc.cprint('Hello', tx='dg', style='bi') # prints dark green, bold italic text
     tc.cprint('Hello', preset='error') # prints text with the 'error' preset
 
 ####colour
 
-######(message, preset=None, fg=None, bg=None, style="", br=False)
+######(message, preset=None, tx=None, bg=None, style="", br=False)
 
 Message is required, all other params are optional and can be named.
 
@@ -44,17 +44,17 @@ This can be used to mix styles.
     
 ####new_preset
 
-######(name, preset=None, fg=None, bg=None, style="", br=False, test=False)
+######(name, preset=None, tx=None, bg=None, style="", br=False, test=False)
 
 name is required, all other params are optional and can be named.
 
 Creates a new preset format that you can use with the other commands in this module.
 You can also add the `test=True` parameter to have it print out an example of the preset.
 
-    tc.new_preset("important", fg="a530", style="rb")
+    tc.new_preset("important", tx="a530", style="rb")
     #creates a new preset called "important"
     
-    tc.new_preset("important", fg="a530", style="rb", test=True)
+    tc.new_preset("important", tx="a530", style="rb", test=True)
     #does the same as the last line, but also gives a sample.
     
 now these presets can be used:
@@ -63,14 +63,14 @@ now these presets can be used:
    
 ####style_code
 
-######(fg=None, bg=None, style="", br=False, test=False)
+######(tx=None, bg=None, style="", br=False, test=False)
 
 All params are optional and can be named.
 
 Generates a style code that can be added to text. Will also need to be surrounded by ANSI tags:
    
     message = "Red text"
-    style = tc.style_code(fg = "r")
+    style = tc.style_code(tx = "r")
     styled_message = '\x1b[{style}m{message}\x1b[0m)'
 
 ####print_rainbow
@@ -84,7 +84,7 @@ Give it a try, or don't, I definitely didn't spend hours programming this, nope,
 
 ##Colour/style string codes:
 
-Use these in a string whenever a "fg" or "bg" parameter is required
+Use these in a string whenever a "tx" or "bg" parameter is required
 
 ## Styles
 
