@@ -146,11 +146,11 @@ a: rgb values in 3 base 6 digits
     0-5 digits for r then g then b values
     e.g:
     
-    c000: black
-    c520: orange
-    c022: sea green
-    c225: the best blue
-    c555: full white
+    a000: black
+    a520: orange
+    a022: sea green
+    a225: the best blue
+    a555: full white
     
 g: greyscale
 
