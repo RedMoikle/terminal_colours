@@ -3,6 +3,20 @@
 Colour-printer.
 # Author: Michael Stickler
 
+Examples:
+cprint('Hello', fg='r') # prints red text
+cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
+cprint('Hello', preset='error') # prints text with the 'error' preset
+
+print(colour('ERROR: ', preset='error') + "something went wrong!") 
+#prints an error message and the first word is highlighted
+
+new_preset("important", fg="a530", style="rb", test=True)
+#creates a new preset called "important" and gives a sample.
+
+print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}', rotations=5, style="b")
+print_rainbow(f'{" " * 120}\n' * 40, rotations=81, style="r")
+
 List of colours (for fg and bg):
     k   black
     r   red
@@ -25,17 +39,6 @@ List of styles:
     h   hide
 
 more colours:
-SIMPLE:
-string containing colour code
-    k   black
-    r   red
-    g   green
-    y   yellow
-    b   blue
-    m   magenta
-    c   cyan
-    w   white
-ADVANCED:
 prefix with the following:
 l: light colour codes (light and dark may be inverted in dark mode)
     lk: light black
