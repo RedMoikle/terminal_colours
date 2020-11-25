@@ -23,7 +23,8 @@ Colour and Style Code Guide
 Message is required, all other params are optional and can be named.
 
 Prints a message to the screen in a particular colour and style
-
+    
+    import terminal_colours
     cprint('Hello', fg='r') # prints red text
     cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
     cprint('Hello', preset='error') # prints text with the 'error' preset
