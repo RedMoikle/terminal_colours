@@ -213,9 +213,9 @@ def print_rainbow(message, rotations=1.5, style=""):
 # default presets
 testing = __name__ == '__main__'
 new_preset("info", fg="lc", style="i", test=testing)
-new_preset("debug", fg="lm", br=True, style="i", test=testing)
-new_preset("warning", fg="y", style="iu", test=testing)
-new_preset("error", fg="r", style="bu", test=testing)
+new_preset("debug", fg="lm", style="i", test=testing)
+new_preset("warning", fg="y", br=True, style="iu", test=testing)
+new_preset("error", fg="r", br=True, style="bu", test=testing)
 new_preset("critical", fg="dr", style="rbu", test=testing)
 if __name__ == '__main__':
     print_rainbow(f'{" " * 120}\n' * 4, rotations=11.5, style="r")
