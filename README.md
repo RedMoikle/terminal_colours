@@ -24,10 +24,10 @@ Message is required, all other params are optional and can be named.
 
 Prints a message to the screen in a particular colour and style
     
-    import terminal_colours
-    cprint('Hello', fg='r') # prints red text
-    cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
-    cprint('Hello', preset='error') # prints text with the 'error' preset
+    import terminal_colours.terminal_colours as tc
+    tc.cprint('Hello', fg='r') # prints red text
+    tc.cprint('Hello', fg='dg', style='bi') # prints dark green, bold italic text
+    tc.cprint('Hello', preset='error') # prints text with the 'error' preset
 
 ####colour
 
@@ -38,10 +38,10 @@ Message is required, all other params are optional and can be named.
 Returns a string formatted with a specified colour and style. 
 This can be used to mix styles.
 
-    colour('WARNING', preset='warning') 
+    tc.colour('WARNING', preset='warning') 
     # Returns '\x1b[33;3;4mWARNING\x1b[0m'
     
-    print(colour('ERROR: ', preset='error') + "something went wrong!") 
+    print(tc.colour('ERROR: ', preset='error') + "something went wrong!") 
     #prints an error message and the first word is highlighted
     
 ####new_preset
@@ -53,15 +53,15 @@ name is required, all other params are optional and can be named.
 Creates a new preset format that you can use with the other commands in this module.
 You can also add the `test=True` parameter to have it print out an example of the preset.
 
-    new_preset("important", fg="a530", style="rb")
+    tc.new_preset("important", fg="a530", style="rb")
     #creates a new preset called "important"
     
-    new_preset("important", fg="a530", style="rb", test=True)
+    tc.new_preset("important", fg="a530", style="rb", test=True)
     #does the same as the last line, but also gives a sample.
     
 now these presets can be used:
 
-    print(colour("ATTENTION! ", "important") + "This message is super duper important")
+    print(tc.colour("ATTENTION! ", "important") + "This message is super duper important")
    
 ####style_code
 
@@ -72,7 +72,7 @@ All params are optional and can be named.
 Generates a style code that can be added to text. Will also need to be surrounded by ANSI tags:
    
     message = "Red text"
-    style = style_code(fg = "r")
+    style = tc.style_code(fg = "r")
     styled_message = '\x1b[{style}m{message}\x1b[0m)'
 
 ####print_rainbow
@@ -81,8 +81,8 @@ Generates a style code that can be added to text. Will also need to be surrounde
 
 Give it a try, or don't, I definitely didn't spend hours programming this, nope, not at all.
 
-    print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}', rotations=5, style="b")
-    print_rainbow(f'{" " * 120}\n' * 40, rotations=81, style="r")
+    tc.print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}', rotations=5, style="b")
+    tc.print_rainbow(f'{" " * 120}\n' * 40, rotations=81, style="r")
 
 ##Colour/style string codes:
 
