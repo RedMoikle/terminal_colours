@@ -1,6 +1,6 @@
 #! python3
 """
-Colour-printer.
+Add helpful ANSI tools for printing funky text
 # Author: Michael Stickler
 
 Examples:
@@ -81,7 +81,7 @@ COLCODE = {
     'b': 4,  # blue
     'm': 5,  # magenta
     'c': 6,  # cyan
-    'w': 7  # white
+    'w': 7   # white
 }
 
 FMTCODE = {
