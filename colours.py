@@ -78,7 +78,7 @@ COLCODE = {
     'b': 4,  # blue
     'm': 5,  # magenta
     'c': 6,  # cyan
-    'w': 7   # white
+    'w': 7  # white
 }
 
 FMTCODE = {
@@ -107,6 +107,7 @@ def colour(message, preset=None, fg=None, bg=None, style="", br=False, ) -> str:
     else:
         prop_str = PRESETS[preset]
     if prop_str:
+        # TODO: if \n in message, skip formatting on them
         return f"\x1b[{prop_str}m{message}\x1b[0m"
     else:
         return message
