@@ -1,7 +1,7 @@
 #! python3
 """
 Colour-printer.
-# Modified by: Michael Stickler
+# Author: Michael Stickler
 
 List of colours (for fg and bg):
     k   black
