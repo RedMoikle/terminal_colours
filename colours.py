@@ -97,6 +97,7 @@ FMTCODE = {
 }
 PRESETS = {}
 
+
 def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **kwargs):
     """print a string with a particular colour/style"""
     print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
@@ -210,7 +211,7 @@ def print_rainbow(message, rotations=1.5, style=""):
                    for char, r, g, b in rgb]))
 
 
-def readable(message="", col="", background=False, style="", br=False):
+def readable(message="", col="", background=False, cancel=False, style="", br=False):
     """Formats the string to make sure it is readable"""
     if col in COLCODE:
         if col == "k":
@@ -222,24 +223,39 @@ def readable(message="", col="", background=False, style="", br=False):
             contrast = "lk"
         else:
             contrast = "dw"
-    elif col.startswith("a") and int(col[2]) > 2:
+    elif col.startswith("a") and int(col[1]) / 2 + int(col[2]) > 2:
         contrast = "s0"
     elif col.startswith("s") and int(col[1:]) > 11:
         contrast = "s0"
     else:
         contrast = "s23"
+    if cancel:
+        contrast = None
     if background:
         return colour(message, tx=contrast, bg=col, style=style, br=br)
     return colour(message, tx=col, bg=contrast, style=style, br=br)
 
 
-def test_pattern(bg=None):
+def test_pattern(bg=True, contrast=True, style=""):
+    cancel = not contrast
     print("Simple colours: colour initial")
-    print("       " + "".join([readable(f" {c}  ", c, background=bg) for c in COLCODE]) + "\n")
+    print("       " + "".join([readable(f" {c}  ", c,
+                                        background=bg,
+                                        cancel=cancel,
+                                        style=style)
+                               for c in COLCODE]) + "\n")
 
     print("Colour shades: prefix colour initial with l for light or d for dark")
-    print("Light: " + "".join([readable(f"l{c} ", f"l{c}", background=bg) for c in COLCODE]))
-    print("Dark:  " + "".join([readable(f"d{c} ", f"d{c}", background=bg) for c in COLCODE]) + "\n")
+    print("Light: " + "".join([readable(f"l{c} ", f"l{c}",
+                                        background=bg,
+                                        cancel=cancel,
+                                        style=style)
+                               for c in COLCODE]))
+    print("Dark:  " + "".join([readable(f"d{c} ", f"d{c}",
+                                        background=bg,
+                                        cancel=cancel,
+                                        style=style)
+                               for c in COLCODE]) + "\n")
 
     print("Advanced 256 bit RGB: prefix 3 ints 0-5 with a (a050: green, a210: brown)")
     columns = 2
@@ -250,14 +266,17 @@ def test_pattern(bg=None):
             print("       ", end="")
             for r in range(r_row * columns, r_row * columns + columns):
                 if r < 6:
-                    print("".join([readable(f" {r}{g}{b}", f"a{r}{g}{b}", background=bg) for b in range(6)]),
+                    print("".join([readable(f" {r}{g}{b}", f"a{r}{g}{b}", background=bg, cancel=cancel, style=style)
+                                   for b in range(6)]),
                           end=" " * 4)
             print("")
         print("")
 
     print("Greyscale: prefix int 0-23 with s (s0: black, s23: white, s11: 50%grey)")
-    print("       " + "".join([readable(f"s{i}".rjust(4), f"s{i}", background=bg) for i in range(0, 12)]) + "")
-    print("       " + "".join([readable(f"s{i}".rjust(4), f"s{i}", background=bg) for i in range(12, 24)]) + "\n")
+    print("       " + "".join([readable(f"s{i}".rjust(4), f"s{i}", background=bg, cancel=cancel, style=style)
+                               for i in range(0, 12)]) + "")
+    print("       " + "".join([readable(f"s{i}".rjust(4), f"s{i}", background=bg, cancel=cancel, style=style)
+                               for i in range(12, 24)]) + "\n")
 
 
 # default presets
