@@ -64,10 +64,10 @@ a: rgb values in 3 base 6 digits
     a000: black
     a520: orange
     a022: sea green
-g: greyscale
+s: greyscale
     0-25 brightness
-    g0: black
-    g12: middle grey
+    s0: black
+    s12: middle grey
 """
 from math import sin, pi
 from typing import List
@@ -164,10 +164,10 @@ def get_colour_code(code="") -> str:
                 a000: black
                 a520: orange
                 a022: sea green
-            g: greyscale
+            s: greyscale
                 0-25 brightness
-                g0: black
-                g12: middle grey
+                s0: black
+                s12: middle grey
     """
     if code.startswith("l"):
         return f"8;5;{COLCODE[code[1]]}"
@@ -175,7 +175,7 @@ def get_colour_code(code="") -> str:
         return f"8;5;{COLCODE[code[1]] + 8}"
     if code.startswith("a"):
         return f"8;5;{16 + int(code[1:], 6)}"
-    if code.startswith("g"):
+    if code.startswith("s"):
         if code[1:] == "0":
             return f"8;5;0"
         if code[1:] == "25":
