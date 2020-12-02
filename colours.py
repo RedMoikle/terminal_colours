@@ -64,10 +64,10 @@ a: rgb values in 3 base 6 digits
     a000: black
     a520: orange
     a022: sea green
-g: greyscale
+s: greyscale
     0-25 brightness
-    g0: black
-    g12: middle grey
+    s0: black
+    s12: middle grey
 """
 from math import sin, pi, ceil
 from typing import List
@@ -96,7 +96,6 @@ FMTCODE = {
     's': 9,  # strikethrough
 }
 PRESETS = {}
-
 
 def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **kwargs):
     """print a string with a particular colour/style"""
