@@ -103,15 +103,19 @@ def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **
     print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
 
 
-def colour(message, preset=None, tx=None, bg=None, style="", br=False, ) -> str:
+def colour(message, preset=None, tx=None, bg=None, style="", br=False, skip_break=True) -> str:
     """return a string with a particular colour/style, useful for mixing styles"""
+    if skip_break:
+        m_lines = str(message).split("\n")
+    else:
+        m_lines = [str(message)]
     if preset is None:
         prop_str = style_code(tx, bg, style, br)
     else:
         prop_str = PRESETS[preset]
     if prop_str:
-        # TODO: if \n in message, skip formatting on them
-        return f"\x1b[{prop_str}m{message}\x1b[0m"
+        # if \n in message, skip formatting on them
+        return "\n".join([f"\x1b[{prop_str}m{line}\x1b[0m" for line in m_lines])
     else:
         return message
 
@@ -199,11 +203,6 @@ def print_rainbow(message, rotations=1.5, style=""):
     rgb = []
     char_iter = iter(enumerate(message))
     for i, char in char_iter:
-        if char == "\n":
-            print("".join([colour(char, tx=f"a{r}{g}{b}", style=style)
-                           for char, r, g, b in rgb]))
-            rgb = []
-            continue
         rgb.append([char] + rainbow_nums(frequency, i))
         # [max(0, min(5, int(6 * (sin(2 * pi * (frequency * i + 0.333 * channel)) / 2 + 0.5))))
         # for channel in range(1, 4)])
