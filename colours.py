@@ -213,12 +213,14 @@ def print_rainbow(message, rotations=1.5, style=""):
 def readable(message="", col="", background=False, cancel=False, style="", br=False):
     """Formats the string to make sure it is readable"""
     if col in COLCODE:
-        if col == "k":
-            contrast = "w"
+        if col == "w":
+            contrast = "lk"
         else:
-            contrast = "k"
+            contrast = "dw"
     elif col[0] in ["l", "d"]:
-        if col in ["dw", "dk"]:
+        if col in ["dy", "dc"]:
+            contrast = "s0"
+        elif col in ["dw", "lw", "dk"]:
             contrast = "lk"
         else:
             contrast = "dw"
