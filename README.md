@@ -1,9 +1,10 @@
 # terminal_colours
-![Preview image](/preview.PNG)
+
 ##Add helpful ANSI tools for printing funky text
 
 **Author: Michael Stickler**
 
+![Preview image](/preview.PNG)
 ****
 ###Contents:
 
@@ -150,9 +151,9 @@ a: rgb values in 3 base 6 digits
     a225: the best blue
     a555: full white
     
-g: greyscale
+s: greyscale
 
     0-25 brightness
-    g0 :  black
-    g12: middle grey
-    g25: white
+    s0 :  black
+    s12: middle grey
+    s25: white

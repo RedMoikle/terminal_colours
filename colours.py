@@ -69,7 +69,7 @@ s: greyscale
     s0: black
     s12: middle grey
 """
-from math import sin, pi
+from math import sin, pi, ceil
 from typing import List
 
 ESC = chr(27)
@@ -105,14 +105,18 @@ def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **
     print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
 
 
-def colour(message, preset=None, tx=None, bg=None, style="", br=False, ) -> str:
+def colour(message, preset=None, tx=None, bg=None, style="", br=False, skip_break=True) -> str:
     """return a string with a particular colour/style, useful for mixing styles"""
+    if skip_break:
+        m_lines = str(message).split("\n")
+    else:
+        m_lines = [str(message)]
     if preset is None:
         prop_str = style_code(tx, bg, style, br)
     else:
         prop_str = PRESETS[preset]
     if prop_str:
-        # TODO: if \n in message, skip formatting on them
+        # if \n in message, skip formatting on them
         return f"{ESC}[{prop_str}m{message}{ESC}[0m"
     else:
         return message
@@ -168,9 +172,9 @@ def get_colour_code(code="") -> str:
                 a520: orange
                 a022: sea green
             s: greyscale
-                0-25 brightness
+                s0-23 brightness
                 s0: black
-                s12: middle grey
+                s11: middle grey
     """
     if code.startswith("l"):
         return f"8;5;{COLCODE[code[1]]}"
@@ -179,11 +183,9 @@ def get_colour_code(code="") -> str:
     if code.startswith("a"):
         return f"8;5;{16 + int(code[1:], 6)}"
     if code.startswith("s"):
-        if code[1:] == "0":
-            return f"8;5;0"
-        if code[1:] == "25":
-            return f"8;5;25"
-        return f"8;5;{233 + int(code[1:])}"
+        if int(code[1:]) > 23:
+            raise ValueError("Greyscale colours must be between 0 and 23")
+        return f"8;5;{232 + int(code[1:])}"
     return f"{COLCODE[code]}"
 
 
@@ -203,16 +205,81 @@ def print_rainbow(message, rotations=1.5, style=""):
     rgb = []
     char_iter = iter(enumerate(message))
     for i, char in char_iter:
-        if char == "\n":
-            print("".join([colour(char, tx=f"a{r}{g}{b}", style=style)
-                           for char, r, g, b in rgb]))
-            rgb = []
-            continue
         rgb.append([char] + rainbow_nums(frequency, i))
         # [max(0, min(5, int(6 * (sin(2 * pi * (frequency * i + 0.333 * channel)) / 2 + 0.5))))
         # for channel in range(1, 4)])
     print("".join([colour(char, tx=f"a{r}{g}{b}", style=style)
                    for char, r, g, b in rgb]))
+
+
+def readable(message="", col="", background=False, cancel=False, style="", br=False):
+    """Formats the string to make sure it is readable"""
+    if col in COLCODE:
+        if col == "w":
+            contrast = "lk"
+        else:
+            contrast = "dw"
+    elif col[0] in ["l", "d"]:
+        if col in ["dy", "dc"]:
+            contrast = "s0"
+        elif col in ["dw", "lw", "dk"]:
+            contrast = "lk"
+        else:
+            contrast = "dw"
+    elif col.startswith("a") and int(col[1]) / 2 + int(col[2]) > 2:
+        contrast = "s0"
+    elif col.startswith("s") and int(col[1:]) > 11:
+        contrast = "s0"
+    else:
+        contrast = "s23"
+    if cancel:
+        contrast = None
+    if background:
+        return colour(message, tx=contrast, bg=col, style=style, br=br)
+    return colour(message, tx=col, bg=contrast, style=style, br=br)
+
+
+def test_pattern(bg=True, contrast=True, style=""):
+    cancel = not contrast
+    cprint("Simple colours: colour initial", tx="lk", style="b")
+    print("        " + "".join([readable(f" {c}  ", c,
+                                         background=bg,
+                                         cancel=cancel,
+                                         style=style)
+                                for c in COLCODE]) + "\n")
+
+    cprint("Colour shades: prefix colour initial with l for light or d for dark", tx="lk", style="b")
+    print("Light:  " + "".join([readable(f" l{c} ", f"l{c}",
+                                         background=bg,
+                                         cancel=cancel,
+                                         style=style)
+                                for c in COLCODE]), end="         ")
+    print("Dark:  " + "".join([readable(f" d{c} ", f"d{c}",
+                                         background=bg,
+                                         cancel=cancel,
+                                         style=style)
+                                for c in COLCODE]) + "\n")
+
+    cprint("Advanced 256 bit RGB: prefix 3 ints 0-5 with a (a050: green, a210: brown)", tx="lk", style="b")
+    columns = 3
+    rows = ceil(6 / columns)
+
+    for r_row in range(rows):
+        for g in range(6):
+            print("        ", end="")
+            for r in range(r_row * columns, r_row * columns + columns):
+                if r < 6:
+                    print("".join([readable(f" {r}{g}{b}", f"a{r}{g}{b}", background=bg, cancel=cancel, style=style)
+                                   for b in range(6)]),
+                          end=" " * 4)
+            print("")
+        print("")
+
+    cprint("Greyscale: prefix int 0-23 with s (s0: black, s23: white, s11: 50%grey)", tx="lk", style="b")
+    print("        " + "".join([readable(f"s{i} ".rjust(4), f"s{i}", background=bg, cancel=cancel, style=style)
+                                for i in range(0, 12)]) + "")
+    print("        " + "".join([readable(f"s{i} ".rjust(4), f"s{i}", background=bg, cancel=cancel, style=style)
+                                for i in range(12, 24)]) + "\n")
 
 
 # default presets
@@ -223,5 +290,6 @@ new_preset("warning", tx="y", br=True, style="iu", test=testing)
 new_preset("error", tx="r", br=True, style="bu", test=testing)
 new_preset("critical", tx="dr", style="rbu", test=testing)
 if __name__ == '__main__':
+    test_pattern(bg=True)
     print_rainbow(f'{" " * 120}\n' * 4, rotations=11.5, style="r")
     print_rainbow(f'{"~" * 10}HOLY WOW, RAINBOWS!{"~" * 10}'.center(120), rotations=5, style="b")
