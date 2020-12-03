@@ -72,6 +72,8 @@ s: greyscale
 from math import sin, pi
 from typing import List
 
+ESC = chr(27)
+# "\x1b"
 BRIGHT_ALLOWED = True
 COLCODE = {
     'k': 0,  # black
@@ -97,6 +99,7 @@ FMTCODE = {
 }
 PRESETS = {}
 
+
 def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **kwargs):
     """print a string with a particular colour/style"""
     print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
@@ -110,7 +113,7 @@ def colour(message, preset=None, tx=None, bg=None, style="", br=False, ) -> str:
         prop_str = PRESETS[preset]
     if prop_str:
         # TODO: if \n in message, skip formatting on them
-        return f"\x1b[{prop_str}m{message}\x1b[0m"
+        return f"{ESC}[{prop_str}m{message}{ESC}[0m"
     else:
         return message
 
