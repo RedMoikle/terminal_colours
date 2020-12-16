@@ -105,18 +105,14 @@ def cprint(message, preset=None, tx=None, bg=None, style="", br=False, *args, **
     print(colour(message, preset, tx, bg, style, br), *args, **kwargs)
 
 
-def colour(message, preset=None, tx=None, bg=None, style="", br=False, skip_break=True) -> str:
+def colour(message, preset=None, tx=None, bg=None, style="", br=False) -> str:
     """return a string with a particular colour/style, useful for mixing styles"""
-    if skip_break:
-        m_lines = str(message).split("\n")
-    else:
-        m_lines = [str(message)]
     if preset is None:
         prop_str = style_code(tx, bg, style, br)
     else:
         prop_str = PRESETS[preset]
+        prop_str = PRESETS[preset]
     if prop_str:
-        # if \n in message, skip formatting on them
         return f"{ESC}[{prop_str}m{message}{ESC}[0m"
     else:
         return message
@@ -255,10 +251,10 @@ def test_pattern(bg=True, contrast=True, style=""):
                                          style=style)
                                 for c in COLCODE]), end="         ")
     print("Dark:  " + "".join([readable(f" d{c} ", f"d{c}",
-                                         background=bg,
-                                         cancel=cancel,
-                                         style=style)
-                                for c in COLCODE]) + "\n")
+                                        background=bg,
+                                        cancel=cancel,
+                                        style=style)
+                               for c in COLCODE]) + "\n")
 
     cprint("Advanced 256 bit RGB: prefix 3 ints 0-5 with a (a050: green, a210: brown)", tx="lk", style="b")
     columns = 3
